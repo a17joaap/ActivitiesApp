@@ -1,18 +1,44 @@
 package com.example.brom.activitiesapp;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
-    private String[] mountainNames = {"Matterhorn","Mont Blanc","Denali"};
-    private String[] mountainLocations = {"Alps","Alps","Alaska"};
-    private int[] mountainHeights ={4478,4808,6190};
+    public static final String mountainName = "Mountain_Name";
+    public static final String mountainLocation = "Mountain_Location";
+    public static final String mountainHeight = "Mountain_Height";
+    private String[] mountainNames = {"Matterhorn", "Mont Blanc", "Denali", "Mt. Everest", "K2", "Kangchenjunga", "Lhotse", "Makalu", "Cho Oyu", "Dhaulagiri"};
+    private String[] mountainLocations = {"Alps", "Alps", "Alaska", "Nepal", "Pakistan", "Nepal", "Nepal", "Nepal", "Nepal", "Nepal"};
+    private int[] mountainHeights = {4478, 4808, 6190, 8848, 8611, 8586, 8516, 8485, 8201, 8167};
     // Create ArrayLists from the raw data above and use these lists when populating your ListView.
+    public ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        listView = (ListView) findViewById(R.id.mtnList);
+        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), R.layout.list_item_textview, R.id.itemTextView, mountainNames);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(getApplicationContext(), MountainDetailsActivity.class);
+                        intent.putExtra(mountainName, mountainNames[i]);
+                        intent.putExtra(mountainLocation, mountainLocations[i]);
+                        intent.putExtra(mountainHeight, mountainHeights[i]);
+                        startActivity(intent);
+                    }
+                }
+        );
 
         // 1. Create a ListView as in previous assignment
         // 2. Create a new activity named "MountainDetailsActivity
